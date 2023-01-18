@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Jurusan;
+use App\Models\Mengajar;
+use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\Mapel;
 
-
-class JurusanController extends Controller
+class MengajarController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +18,10 @@ class JurusanController extends Controller
     public function index()
     {
         //
-        return view('jurusan.index',[
-            'jurusan' => Jurusan::all()
+        return view('mengajar.index', [
+            'mengajar' => Mengajar::all()
         ]);
-        
+
     }
 
     /**
@@ -31,7 +32,11 @@ class JurusanController extends Controller
     public function create()
     {
         //
-        return view('jurusan.create');
+        return view('mengajar.create', [
+            'guru' => Guru::all(),
+            'mapel' => Mapel::all(),
+            'kelas' => Kelas::all()
+        ]);
     }
 
     /**
@@ -43,11 +48,13 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         //
-        $data_jurusan = $request->validate([
-            'nama_jurusan' => 'required'
+        $data_mengajar = $request->validate([
+            'guru_id' => 'required',
+            'mapel_id' => 'required',
+            'kelas_id' => 'required' 
         ]);
-        Jurusan::create($data_jurusan);
-        return redirect('/jurusan/index')->with('success', 'Data Jurusan Berhasil Ditambah');
+        Mengajar::create($data_mengajar);
+        return redirect('/mengajar/index')->with('success', 'Data Mengajar Berhasil Ditambah');
     }
 
     /**
@@ -67,11 +74,14 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Jurusan $jurusan)
+    public function edit(Mengajar $mengajar)
     {
         //
-        return view('jurusan.edit', [
-            'jurusan' => $jurusan
+        return view('mengajar.edit', [
+            'mengajar' => $mengajar,
+            'guru' => Guru::all(),
+            'mapel' => Mapel::all(),
+            'kelas' => Kelas::all()
         ]);
     }
 
@@ -82,14 +92,16 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Jurusan $jurusan)
+    public function update(Request $request, Mengajar $mengajar)
     {
         //
-        $data_jurusan = $request->validate([
-            'nama_jurusan' => 'required'
+        $data_mengajar = $request->validate([
+            'guru_id' => 'required',
+            'mapel_id' => 'required',
+            'kelas_id' => 'required'
         ]);
-        $jurusan->update($data_jurusan);
-        return redirect('/jurusan/index')->with('success', 'Data jurusan berhasil di update');
+        $mengajar->update($data_mengajar);
+        return redirect('/mengajar/index')->with('success', 'Data mengajar berhasil di update');
     }
 
     /**
@@ -98,17 +110,11 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Jurusan $jurusan)
+    public function destroy(Mengajar $mengajar)
     {
         //
-        $kelas = Kelas::where('jurusan_id', $jurusan->id)->first();
-
-        if($kelas) {
-            return back()->with('error', "$jurusan->nama_jurusan masih digunakan dimenu kelas");
-        }
-
-        $jurusan->delete();
-        return redirect('/jurusan/index')->with('success', 'Data Jurusan Berhasil dihapus');
+        $mengajar->delete();
+        return back()->with('success', "Data Mengajar berhasil dihapus");
 
     }
 }

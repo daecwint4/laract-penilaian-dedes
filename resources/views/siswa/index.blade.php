@@ -4,6 +4,12 @@
     <b>
     <h2>LIST DATA SISWA</h2>
         <a href="/siswa/create" class="button-primary">TAMBAH DATA</a>
+        @if (session('success'))
+        <p class="text-success">{{ session('success') }}</p>
+        @endif
+        @if (session('error'))
+        <p class="text-danger">{{ session('error') }}</p>
+        @endif
         <table cellpadding="10">
                 <tr>
                     <td>NO</td>
@@ -21,7 +27,7 @@
                         <td>{{ $s->nis }}</td>
                         <td>{{ $s->nama_siswa }}</td>
                         <td>{{ $s->jk == 'L' ? 'LAKI-LAKI' : 'PEREMPUAN' }}</td>
-                        <td>{{ $s->kelas->nama_kelas }}</td>
+                        <td>{{ $s->kelas->nama_kelas }} </td>
                         <td>{{ $s->alamat }}</td>
                         <td>{{ $s->password }}</td>
                         <td>

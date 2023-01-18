@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Siswa;
 use App\Models\Kelas;
+use App\Models\Nilai;
 
 class SiswaController extends Controller
 {
@@ -94,9 +95,10 @@ class SiswaController extends Controller
         //
         $data_siswa = $request->validate([
             'nis' => 'required|numeric',
-            'nama_guru' => 'required',
+            'nama_siswa' => 'required',
             'jk' => 'required',
             'alamat' => 'required',
+            'kelas_id' => 'required',
             'password' => 'required'
         ]);
         $siswa->update($data_siswa);
@@ -113,9 +115,9 @@ class SiswaController extends Controller
     public function destroy(Siswa $siswa)
     {
         //
-        $kelas = Kelas::where('siswa_id', $siswa->id)->first();
-        if($kelas) {
-            return back()->with('error',"$kelas->nama_siswa masih digunakan dimenu mengajar");
+        $nilai = Nilai::where('siswa_id', $siswa->id)->first();
+        if($nilai) {
+            return back()->with('error',"$siswa->nama_siswa masih digunakan dimenu mengajar");
         }
 
         $siswa->delete();

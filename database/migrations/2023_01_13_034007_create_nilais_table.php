@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('nilais', function (Blueprint $table) {
             $table->id();
-            $table->integer('mengajar-id');
+            $table->integer('mengajar_id');
             $table->integer('siswa_id');
             $table->double('uh');
             $table->double('uts');

@@ -2,7 +2,7 @@
 @section('content')
     <center>
     <br>
-    <h2>TAMBAH DATA JURUSAN</h2>
+    <h2>EDIT MATA PELAJARAN</h2>
         <form method="POST" action="/mapel/update/{{ $mapel->id }}">
             @csrf
             <table width="50">

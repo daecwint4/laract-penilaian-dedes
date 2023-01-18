@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Jurusan;
-use App\Models\Kelas;
+use App\Models\Nilai;
+use App\Models\Mengajar;
+use App\Models\Siswa;
 
-
-class JurusanController extends Controller
+class NilaiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +17,9 @@ class JurusanController extends Controller
     public function index()
     {
         //
-        return view('jurusan.index',[
-            'jurusan' => Jurusan::all()
+        return view('nilai.index', [
+            'nilai' => Nilai::all()
         ]);
-        
     }
 
     /**
@@ -31,7 +30,11 @@ class JurusanController extends Controller
     public function create()
     {
         //
-        return view('jurusan.create');
+        $mengajar = Mengajar::where('guru_id', session('user')->id);
+        return view('nilai.create', [
+            'mengajar' => $mengajar->get(),
+            'siswa' => Siswa::whereIn('kelas_id', $mengajar->get('kelas_id'))->get()
+        ]);
     }
 
     /**
@@ -43,11 +46,18 @@ class JurusanController extends Controller
     public function store(Request $request)
     {
         //
-        $data_jurusan = $request->validate([
-            'nama_jurusan' => 'required'
+        $data_nilai = $request->validate([
+            'mengajar_id' => 'required',
+            'siswa_id' => 'required',
+            'uh' => 'required|numeric',
+            'uts' => 'required|numeric',
+            'uas' => 'required|numeric'
         ]);
-        Jurusan::create($data_jurusan);
-        return redirect('/jurusan/index')->with('success', 'Data Jurusan Berhasil Ditambah');
+
+        $data_nilai['na'] = round(($request->uh + $request->uts + $request->uas)/ 3);
+        Nilai::create($data_nilai);
+        return redirect('/nilai/index')->with('success','Data Nilai Berhasil Ditambah');
+
     }
 
     /**
@@ -67,12 +77,16 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Jurusan $jurusan)
+    public function edit(Nilai $nilai)
     {
         //
-        return view('jurusan.edit', [
-            'jurusan' => $jurusan
+        $mengajar = Mengajar::where('guru_id', session('user')->id);
+        return view('nilai.edit', [
+            'nilai' => $nilai,
+            'mengajar' => $mengajar->get(),
+            'siswa' => Siswa::whereIn('kelas_id', $mengajar->get('kelas_id'))->get()
         ]);
+
     }
 
     /**
@@ -82,14 +96,9 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Jurusan $jurusan)
+    public function update(Request $request, $id)
     {
         //
-        $data_jurusan = $request->validate([
-            'nama_jurusan' => 'required'
-        ]);
-        $jurusan->update($data_jurusan);
-        return redirect('/jurusan/index')->with('success', 'Data jurusan berhasil di update');
     }
 
     /**
@@ -98,17 +107,8 @@ class JurusanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Jurusan $jurusan)
+    public function destroy($id)
     {
         //
-        $kelas = Kelas::where('jurusan_id', $jurusan->id)->first();
-
-        if($kelas) {
-            return back()->with('error', "$jurusan->nama_jurusan masih digunakan dimenu kelas");
-        }
-
-        $jurusan->delete();
-        return redirect('/jurusan/index')->with('success', 'Data Jurusan Berhasil dihapus');
-
     }
 }

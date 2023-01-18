@@ -2,7 +2,7 @@
 @section('content')
     <center>
     <br>
-    <h2>TAMBAH DATA JURUSAN</h2>
+    <h2>EDIT DATA JURUSAN</h2>
         <form method="POST" action="/jurusan/update/{{ $jurusan->id }}">
             @csrf
             <table width="50%">
