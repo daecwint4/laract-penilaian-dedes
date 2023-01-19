@@ -45,7 +45,7 @@
                 <tr>
                     <td class="bar">PASSWORD</td>
                     <td class="bar">
-                        <input type="text" name="password">
+                        <input type="password" name="password">
                     </td>
                 </tr>
                 <tr>
