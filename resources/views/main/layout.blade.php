@@ -15,16 +15,17 @@
 <div class="menu">
     <b>
         <a href="/home">HOME</a>
-        {{--@if (session('user')->role == 'admin') --}}
+        @if (session('user')->role == 'admin') 
+        
         <a href="/guru/index">GURU</a>
         <a href="/jurusan/index">JURUSAN</a>
         <a href="/kelas/index">KELAS</a>
         <a href="/siswa/index">SISWA</a>
         <a href="/mapel/index">MATA PELAJARAN</a>
         <a href="/mengajar/index">MENGAJAR</a>
-        {{-- @else --}}
+         @else 
         <a href="/nilai/index">NILAI</a>
-        {{-- @endif --}}
+         @endif 
         <a href="/logout">LOGOUT</a>
     </b>
 </div>

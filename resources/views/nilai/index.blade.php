@@ -3,7 +3,9 @@
     <center>
         <b>
             <h2>LIST DATA NILAI</h2>
+            @if (session('user')->role == 'guru')
                 <a href="/nilai/create" class="button-primary">Tambah Data</a>
+                @endif
             @if (session('success'))
                 <p class="text-success">{{ session('success') }}</p>
             @endif
@@ -20,7 +22,10 @@
                     <td>UTS</td>
                     <td>UAS</td>
                     <td>NA</td>
+                    @if (session('user')->role == 'guru')
                         <td>ACTION</td>
+                    @endif
+                        
                 </tr>
                 @foreach ($nilai as $n)
                     <tr>
@@ -31,12 +36,12 @@
                         <td>{{ $n->uts }}</td>
                         <td>{{ $n->uas }}</td>
                         <td>{{ $n->na }}</td>
-                        {{-- @if (session('user')->role == 'guru') --}}
+                        @if (session('user')->role == 'guru')
                             <td>
                                 <a href="/nilai/edit/{{ $n->id }}" class="button-warning">EDIT</a>
                                 <a href="/nilai/destroy/{{ $n->id }}" onclick="return confirm('Yakin Hapus')" class="button-danger">HAPUS</a>
                             </td>
-                        {{-- @endif --}}
+                        @endif
                     </tr>
                 @endforeach
             </table>

@@ -4,8 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\IndexController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\IndexController;
 use App\Http\Controllers\JurusanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
@@ -14,7 +14,13 @@ use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\SiswaController;
 
 
-Route::get('/home', [IndexController::class,'home']);
+
+Route::get('/', [IndexController::class, 'index']);
+Route::post('/login/admin', [IndexController::class, 'loginAdmin']);
+Route::post('/login/siswa', [IndexController::class, 'loginSiswa']);
+Route::post('/login/guru', [IndexController::class, 'loginGuru']);
+Route::get('/home', [IndexController::class, 'home']);
+Route::get('/logout', [IndexController::class, 'logout']);
 
 Route::prefix('/guru')->group(function() {
     Route::get('/index', [GuruController::class, 'index']);
@@ -80,14 +86,7 @@ Route::prefix('/nilai')->group(function() {
 });
 
 
-Route::get('/', function(){
-    return Inertia::render('Welcome',[
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion'=> Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+
 
 Route::get('/dashboard', function(){
     return Inertia::render('Dashboard');

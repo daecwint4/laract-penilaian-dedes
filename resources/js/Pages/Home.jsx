@@ -13,7 +13,7 @@ const Home = () => {
                 <b>
                     <br/>
                     SELAMAT DATANG USER DENGAN AKSES MASUK {" "}
-                    {user?.kode_admin ?? user?.nis ?? user?.nip}
+                    {user?.id_admin ?? user?.nis ?? user?.nip}
                 </b>
             </center>
         </Layout>
